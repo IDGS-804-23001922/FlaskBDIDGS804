@@ -6,14 +6,17 @@ from flask import g
 import forms 
 from flask_migrate import Migrate
 from maestros.routes import maestros
-
+from cursos.routes import cursos
 
 from models import db
 from models import Alumnos
 
+
+
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.register_blueprint(maestros)
+app.register_blueprint(cursos)
 db.init_app(app)
 migrate = Migrate(app,db)
 csrf=CSRFProtect()
@@ -107,8 +110,4 @@ def eliminar():
 
 if __name__ == '__main__':
 	csrf.init_app(app)
-
-	with app.app_context():
-		db.create_all()
-
 	app.run(debug=True)

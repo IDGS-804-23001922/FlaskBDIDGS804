@@ -1,5 +1,8 @@
 .env
 node_modules
 static
+templates/cursos
+cursos
 migrations
-__pycache__
+
+

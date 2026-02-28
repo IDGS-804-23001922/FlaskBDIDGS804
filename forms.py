@@ -1,35 +1,41 @@
 from wtforms import Form
-from flask_wtf import FlaskForm
- 
 from wtforms import StringField, IntegerField
 from wtforms import EmailField
 from wtforms import validators
- 
+
 class UserForm(Form):
     id = IntegerField('id', [
-        validators.number_range(min=1, max=20, message='valor no valido')
+        validators.number_range(min=1, max=999999, message='valor no valido')
     ])
-   
+
     nombre = StringField('nombre', [
         validators.DataRequired(message='El nombre es requerido'),
         validators.length(min=4, max=20, message='requiere min=4 max=20')
     ])
-   
+
     apellidos = StringField('apellidos', [
         validators.DataRequired(message='El apellido es requerido')
     ])
-   
+
     email = EmailField('correo', [
-        validators.DataRequired(message='El apellido es requerido'),
+        validators.DataRequired(message='El correo es requerido'),
         validators.Email(message='Ingrese un correo valido')
     ])
 
     telefono = StringField('telefono', [
-        validators.DataRequired(message='El apellido es requerido'),
-        validators.Email(message='Ingrese un telefono valido')
+        validators.DataRequired(message='El telefono es requerido'),
+        validators.length(min=7, max=15, message='telefono invalido')
     ])
 
-    Especialidad = StringField('especialidad', [
-        validators.DataRequired(message='la especialidad  es requerido'),
-        validators.Email(message='Ingrese una especialida valido')
+    especialidad = StringField('especialidad', [
+        validators.DataRequired(message='La especialidad es requerida'),
+        validators.length(min=3, max=50, message='especialidad invalida')
     ])
+
+    from wtforms import Form, StringField, IntegerField, validators
+
+class CursoForm(Form):
+    id = IntegerField('id')
+    nombre = StringField('nombre', [validators.DataRequired()])
+    descripcion = StringField('descripcion')
+    maestro_id = IntegerField('maestro_id', [validators.DataRequired()])
