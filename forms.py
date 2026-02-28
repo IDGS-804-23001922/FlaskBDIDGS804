@@ -28,4 +28,8 @@ class UserForm(Form):
         validators.DataRequired(message='El apellido es requerido'),
         validators.Email(message='Ingrese un telefono valido')
     ])
- 
+
+    Especialidad = StringField('especialidad', [
+        validators.DataRequired(message='la especialidad  es requerido'),
+        validators.Email(message='Ingrese una especialida valido')
+    ])
