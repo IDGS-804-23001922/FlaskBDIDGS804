@@ -1,8 +1,6 @@
 .env
 node_modules
 static
-templates/cursos
-cursos
 migrations
 
 

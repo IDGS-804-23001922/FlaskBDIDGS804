@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="py-20 w-full max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Consulta de Cursos</h1>
+        <a href="{{ url_for('cursos.principal_consultas') }}"
+           class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+            Regresar
+        </a>
+    </div>
+
+    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200">
+        <form method="GET" action="{{ url_for('cursos.consultas_cursos') }}" class="flex gap-4 mb-6">
+            <input
+                type="text"
+                name="buscar_curso"
+                value="{{ buscar_curso }}"
+                placeholder="Buscar curso por nombre"
+                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+            <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                Buscar
+            </button>
+        </form>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-600 border border-gray-200">
+                <thead class="bg-blue-100 text-gray-700 uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-3 border">ID</th>
+                        <th class="px-4 py-3 border">Nombre</th>
+                        <th class="px-4 py-3 border">Descripción</th>
+                        <th class="px-4 py-3 border">Maestro</th>
+                        <th class="px-4 py-3 border">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if cursos %}
+                        {% for curso in cursos %}
+                        <tr class="bg-white border-b">
+                            <td class="px-4 py-2 border">{{ curso.id }}</td>
+                            <td class="px-4 py-2 border">{{ curso.nombre }}</td>
+                            <td class="px-4 py-2 border">{{ curso.descripcion }}</td>
+                            <td class="px-4 py-2 border">
+                                {{ curso.maestro.nombre }} {{ curso.maestro.apellidos }}
+                            </td>
+                            <td class="px-4 py-2 border">
+                                <a href="{{ url_for('cursos.detalle_consulta_curso', id=curso.id) }}"
+                                   class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                    Detalles
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="px-4 py-4 text-center text-red-500 border">
+                                No se encontraron cursos.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

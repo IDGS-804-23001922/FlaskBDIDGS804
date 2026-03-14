@@ -4,10 +4,10 @@ from flask_migrate import Migrate
 from . import maestros
 from config import DevelopmentConfig
 import forms
-from models import db, Alumnos, Maestros
+from models import db, Alumnos, Maestros , Curso
+
 
 @maestros.route("/maestros", methods=['POST', 'GET'])
-@maestros.route("/index")
 def listado_maestros():
     create_form = forms.UserForm(request.form)
     maestro = Maestros.query.all()
@@ -17,7 +17,7 @@ def listado_maestros():
 def perfil(nombre):
     return f"perfil de {nombre}"
 
-@maestros.route('/detalles', methods=['GET', 'POST'])
+@maestros.route('/detallesMaes', methods=['GET', 'POST'])
 def detallesmaes():
     maestro_class = forms.UserForm(request.form)
     if request.method == 'GET':
@@ -80,20 +80,30 @@ def eliminarmaes():
     create_form = forms.UserForm(request.form)
 
     if request.method == 'GET':
-        id = request.args.get('id')  
+        id = request.args.get('id')
         maes1 = db.session.query(Maestros).filter(Maestros.matricula == id).first()
 
-        create_form.id.data = maes1.matricula
-        create_form.nombre.data = maes1.nombre
-        create_form.apellidos.data = maes1.apellidos
-        create_form.email.data = maes1.email
-        create_form.especialidad.data = maes1.especialidad
+        if maes1:
+            create_form.id.data = maes1.matricula
+            create_form.nombre.data = maes1.nombre
+            create_form.apellidos.data = maes1.apellidos
+            create_form.email.data = maes1.email
+            create_form.especialidad.data = maes1.especialidad
 
     if request.method == 'POST':
         id = create_form.id.data
         maes1 = db.session.query(Maestros).filter(Maestros.matricula == id).first()
-        db.session.delete(maes1)
-        db.session.commit()
+
+        cursos = db.session.query(Curso).filter(Curso.maestro_id == id).all()
+
+        if len(cursos) > 0:
+            flash("No se puede eliminar el maestro porque tiene cursos asignados")
+            return render_template("maestros/eliminarmaes.html", form=create_form)
+
+        if maes1:
+            db.session.delete(maes1)
+            db.session.commit()
+
         return redirect(url_for('maestros.listado_maestros'))
 
     return render_template("maestros/eliminarmaes.html", form=create_form)

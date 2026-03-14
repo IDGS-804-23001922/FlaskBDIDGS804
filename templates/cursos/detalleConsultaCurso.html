@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="py-20 w-full max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Detalle del Curso</h1>
+        <a href="{{ url_for('cursos.consultas_cursos') }}"
+           class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+            Regresar
+        </a>
+    </div>
+
+    {% if curso %}
+    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ curso.nombre }}</h2>
+        <p class="text-gray-700 mb-2"><strong>ID:</strong> {{ curso.id }}</p>
+        <p class="text-gray-700 mb-2"><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+        <p class="text-gray-700 mb-2">
+            <strong>Maestro:</strong> {{ curso.maestro.nombre }} {{ curso.maestro.apellidos }}
+        </p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-xl p-6 border border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Alumnos inscritos</h3>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-600 border border-gray-200">
+                <thead class="bg-blue-100 text-gray-700 uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-3 border">ID</th>
+                        <th class="px-4 py-3 border">Nombre</th>
+                        <th class="px-4 py-3 border">Apellidos</th>
+                        <th class="px-4 py-3 border">Correo</th>
+                        <th class="px-4 py-3 border">Teléfono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if curso.alumnos %}
+                        {% for alumno in curso.alumnos %}
+                        <tr class="bg-white border-b">
+                            <td class="px-4 py-2 border">{{ alumno.id }}</td>
+                            <td class="px-4 py-2 border">{{ alumno.nombre }}</td>
+                            <td class="px-4 py-2 border">{{ alumno.apellidos }}</td>
+                            <td class="px-4 py-2 border">{{ alumno.email }}</td>
+                            <td class="px-4 py-2 border">{{ alumno.telefono }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="px-4 py-4 text-center text-red-500 border">
+                                No hay alumnos inscritos en este curso.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+        <p class="text-red-500">Curso no encontrado.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
